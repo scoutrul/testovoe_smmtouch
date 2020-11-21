@@ -1,18 +1,34 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-app-bar app color="white" flat>
       <v-container class="py-0 fill-height">
-        <v-avatar class="mr-10" color="grey darken-1" size="32"></v-avatar>
-
-        <v-btn
-          v-for="link in links"
-          :key="link"
-          text
-          color="black"
-          :to="link.to"
-        >
-          {{ link.text }}
-        </v-btn>
+        <v-layout align-center>
+          <v-flex class="flex-grow-0">
+            <NuxtLink to="statistic">
+              <v-avatar color="blue darken-1" size="32" class="white--text">
+                U
+              </v-avatar>
+            </NuxtLink>
+          </v-flex>
+          <v-flex class="flex-grow-0 black--text ml-2 mr-8">
+            <NuxtLink to="statistic">
+              {{ $store.state.user.userName }}
+            </NuxtLink>
+          </v-flex>
+          <v-spacer />
+          <v-flex xs1>
+            <v-btn
+              v-for="link in links"
+              :key="link.title"
+              :to="link.to"
+              depressed
+              dark
+              color="orange darken-1"
+            >
+              {{ link.title }}
+            </v-btn>
+          </v-flex>
+        </v-layout>
       </v-container>
     </v-app-bar>
 
@@ -56,28 +72,31 @@
               min-height="70vh"
               rounded="lg"
               color="white"
-              class="black--text"
+              class="black--text px-8"
+              light
             >
               <nuxt />
             </v-sheet>
           </v-col>
         </v-row>
       </v-container>
+      <UserLogin v-if="!$store.state.user.userName" />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import UserLogin from '@/components/UserLogin'
 export default {
+  components: {
+    UserLogin,
+  },
   data: () => ({
-    links: [
-      { text: 'Игра', to: 'play' },
-      { text: 'Статистика', to: 'statistic' },
-    ],
+    links: [{ title: 'Play', to: '/' }],
     categories: [],
     categoriesCount: 5,
   }),
-  async mounted() {
+  async beforeMount() {
     await this.fetchCategories()
   },
   methods: {
