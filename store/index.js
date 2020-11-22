@@ -19,4 +19,7 @@ export const mutations = {
       { categoryId, answerId, isCorrect, value },
     ]
   },
+  RESET_RESULTS(state) {
+    state.user.answers = []
+  },
 }
