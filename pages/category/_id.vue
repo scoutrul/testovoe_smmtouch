@@ -1,14 +1,12 @@
 <template>
   <v-container v-if="category">
     <v-row>
-      <v-col>
-        <h1>
-          {{ category.title }}
-        </h1>
+      <v-col class="display-2">
+        {{ category.title }}
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="d-flex justify-center">
+      <v-col class="d-flex justify-center flex-wrap">
         <v-chip
           v-for="(question, index) in category.clues"
           :key="index"
@@ -21,9 +19,6 @@
           {{ question.value }}
         </v-chip>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col> {{ category }} </v-col>
     </v-row>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -66,7 +61,15 @@
             </v-row>
             <v-row>
               <v-col>
-                {{ currentQuestion.answer }}
+                <v-flex
+                  class="grey--text text--lighten-3"
+                  @click="showAnswer = true"
+                >
+                  show answer
+                </v-flex>
+                <span v-if="showAnswer">
+                  {{ currentQuestion.answer }}
+                </span>
               </v-col>
             </v-row>
 
@@ -88,6 +91,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="snackbar"
+      light
+      top
+      app
+      absolute
+      :color="snackColor"
+      text
+      timeout="1000"
+    >
+      {{ snackText }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -104,6 +119,10 @@ export default {
     currentAnswer: null,
     countDown: null,
     timeOut: false,
+    showAnswer: false,
+    snackbar: false,
+    snackText: 'Not correct',
+    snackColor: null,
   }),
   methods: {
     async fetchCategory() {
@@ -120,7 +139,17 @@ export default {
       this.countDownTimer()
     },
     setAnswer() {
-      const isCorrect = true
+      let isCorrect
+      if (this.currentQuestion.answer === this.currentAnswer) {
+        isCorrect = true
+        this.snackText = 'Correct!'
+        this.snackColor = 'green'
+      } else {
+        isCorrect = false
+        this.snackText = 'Not correct'
+        this.snackColor = 'red'
+      }
+      this.snackbar = true
       this.$store.commit('SET_ANSWER', {
         categoryId: this.$route.params.id,
         answerId: this.currentQuestion.id,
@@ -128,7 +157,9 @@ export default {
         isCorrect,
       })
       this.currentAnswer = null
+      this.showAnswer = false
       this.dialog = false
+      this.countDown = 60
     },
     getChipColor(value) {
       if (value > 300 && value < 800) return 'blue'
