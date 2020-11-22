@@ -1,17 +1,15 @@
 <template>
-  <v-container v-if="category">
+  <v-container v-if="category" class="d-flex align-center">
     <v-row>
-      <v-col class="display-2">
+      <v-col col="12" sm="4" class="display-1 d-flex align-center">
         {{ category.title }}
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex justify-center flex-wrap">
+      <v-col col="10" sm="8" class="d-flex flex-wrap">
         <v-chip
           v-for="(question, index) in category.clues"
           :key="index"
           large
-          class="ma-2 white--text"
+          class="white--text rounded-0"
           :color="getChipColor(question.value)"
           @click="openQuestion(question)"
           :disabled="isAnswered(question)"
@@ -107,9 +105,6 @@
 <script>
 export default {
   name: 'CategoryId',
-  async fetch() {
-    await this.fetchCategory()
-  },
   data: () => ({
     dialog: false,
     category: null,
@@ -122,6 +117,9 @@ export default {
     snackText: 'Not correct',
     snackColor: null,
   }),
+  async mounted() {
+    await this.fetchCategory()
+  },
   methods: {
     async fetchCategory() {
       await this.$axios
@@ -158,6 +156,7 @@ export default {
       this.showAnswer = false
       this.dialog = false
       this.countDown = 60
+      this.timeOut = false
     },
     getChipColor(value) {
       if (value > 300 && value < 800) return 'blue'

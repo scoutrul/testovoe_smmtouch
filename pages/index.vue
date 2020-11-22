@@ -30,14 +30,14 @@
 
 <script>
 export default {
-  async fetch() {
+  data: () => ({
+    categories: [],
+  }),
+  async mounted() {
     await this.$axios.$get(`categories/?count=1000`).then((res) => {
       this.categories = res
     })
   },
-  data: () => ({
-    categories: [],
-  }),
   methods: {
     getCategoryLeftAnswers(category) {
       const filteredByCategory = this.$store.state.user.answers.filter(

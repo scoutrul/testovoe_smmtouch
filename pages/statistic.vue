@@ -57,6 +57,7 @@ export default {
       let userValue = 0
       this.$store.state.user.answers.forEach((answer) => {
         if (answer.isCorrect) userValue = userValue + answer.value
+        else userValue = userValue - answer.value
       })
       return userValue
     },

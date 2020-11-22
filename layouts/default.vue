@@ -77,7 +77,7 @@
               min-height="70vh"
               rounded="lg"
               color="white"
-              class="black--text px-8"
+              class="black--text px-8 d-flex justify-center"
               light
             >
               <nuxt />
@@ -128,6 +128,7 @@ export default {
       let userValue = 0
       this.$store.state.user.answers.forEach((answer) => {
         if (answer.isCorrect) userValue = userValue + answer.value
+        else userValue = userValue - answer.value
       })
       return userValue
     },
