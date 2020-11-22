@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <v-app-bar app color="white" flat>
-      <v-container class="py-0 fill-height">
+      <v-container class="pa-0 px-md-4 fill-height">
         <v-layout align-center>
           <v-flex class="flex-grow-0">
             <v-avatar color="blue darken-1" size="32" class="white--text">
               U
             </v-avatar>
           </v-flex>
-          <v-flex class="flex-grow-0 ml-2 mr-8 blue--text">
+          <v-flex class="flex-grow-0 ml-2 mr-2 blue--text">
             {{ $store.state.user.userName }}
           </v-flex>
           <v-flex class="blue--text">
@@ -20,7 +20,7 @@
           </v-flex>
 
           <v-spacer />
-          <v-flex xs1>
+          <v-flex class="flex-grow-0">
             <v-btn
               v-for="link in links"
               :key="link.title"
@@ -39,7 +39,7 @@
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col cols="3">
+          <v-col cols="12" xs="12" sm="4" md="3">
             <v-sheet rounded="lg" color="green lighten-2">
               <v-list color="transparent">
                 <v-list-item>
@@ -72,7 +72,7 @@
             </v-sheet>
           </v-col>
 
-          <v-col cols="9">
+          <v-col cols="12" xs="12" sm="8" md="9">
             <v-sheet
               min-height="70vh"
               rounded="lg"
