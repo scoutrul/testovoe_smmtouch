@@ -15,6 +15,7 @@
               {{ $store.state.user.userName }}
             </NuxtLink>
           </v-flex>
+          <v-flex class="blue--text">{{ getUserValue() }}</v-flex>
           <v-spacer />
           <v-flex xs1>
             <v-btn
@@ -115,6 +116,15 @@ export default {
         .then((res) => {
           this.categories = res
         })
+    },
+
+    getUserValue() {
+      return this.$store.state.user.answers.reduce((val, acc) => {
+        if (!acc.isCorrect) return 0
+        else {
+          return val + acc.value
+        }
+      }, 0)
     },
   },
 }

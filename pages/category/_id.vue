@@ -16,6 +16,7 @@
           class="ma-2 white--text"
           :color="getChipColor(question.value)"
           @click="openQuestion(question)"
+          :disabled="isAnswered(question)"
         >
           {{ question.value }}
         </v-chip>
@@ -32,16 +33,16 @@
           <v-chip
             small
             class="ma-2 white--text"
-            :color="getChipColor(current.value)"
+            :color="getChipColor(currentQuestion.value)"
           >
-            {{ current.value }}
+            {{ currentQuestion.value }}
           </v-chip>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col>
-                {{ current.question }}
+                {{ currentQuestion.question }}
               </v-col>
             </v-row>
             <v-row>
@@ -65,7 +66,7 @@
             </v-row>
             <v-row>
               <v-col>
-                {{ current.answer }}
+                {{ currentQuestion.answer }}
               </v-col>
             </v-row>
 
@@ -99,9 +100,9 @@ export default {
   data: () => ({
     dialog: false,
     category: null,
-    current: {},
+    currentQuestion: {},
     currentAnswer: null,
-    countDown: 33,
+    countDown: null,
     timeOut: false,
   }),
   methods: {
@@ -113,11 +114,19 @@ export default {
         })
     },
     openQuestion(question) {
-      this.current = question
+      this.currentQuestion = question
+      this.countDown = 60
       this.dialog = true
       this.countDownTimer()
     },
     setAnswer() {
+      const isCorrect = true
+      this.$store.commit('SET_ANSWER', {
+        categoryId: this.$route.params.id,
+        answerId: this.currentQuestion.id,
+        value: this.currentQuestion.value,
+        isCorrect,
+      })
       this.currentAnswer = null
       this.dialog = false
     },
@@ -136,6 +145,12 @@ export default {
       } else {
         this.timeOut = true
       }
+    },
+
+    isAnswered({ id }) {
+      return !!this.$store.state.user.answers.find((answer) => {
+        return answer.answerId === id
+      })
     },
   },
 }
