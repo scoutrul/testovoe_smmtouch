@@ -11,7 +11,7 @@
             </NuxtLink>
           </v-flex>
           <v-flex class="flex-grow-0 black--text ml-2 mr-8">
-            <NuxtLink to="statistic">
+            <NuxtLink to="/statistic">
               {{ $store.state.user.userName }}
             </NuxtLink>
           </v-flex>
@@ -45,10 +45,15 @@
                 >
                   <v-list-item-content>
                     <v-list-item-title>
-                      <span>
-                        {{ category.title }}
-                      </span>
-                      <span> ({{ category.clues_count }}) </span>
+                      <NuxtLink
+                        :to="`/category/${category.id}`"
+                        class="white--text"
+                      >
+                        <span>
+                          {{ category.title }}
+                        </span>
+                        <span> ({{ category.clues_count }}) </span>
+                      </NuxtLink>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
