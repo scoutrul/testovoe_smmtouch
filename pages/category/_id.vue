@@ -95,8 +95,6 @@
       v-model="snackbar"
       light
       top
-      app
-      absolute
       :color="snackColor"
       text
       timeout="1000"
