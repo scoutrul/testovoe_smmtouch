@@ -116,6 +116,7 @@ export default {
     snackbar: false,
     snackText: 'Not correct',
     snackColor: null,
+    countIns: null,
   }),
   async mounted() {
     await this.fetchCategory()
@@ -128,12 +129,7 @@ export default {
           this.category = res
         })
     },
-    openQuestion(question) {
-      this.currentQuestion = question
-      this.countDown = 60
-      this.dialog = true
-      this.countDownTimer()
-    },
+
     setAnswer() {
       let isCorrect
       if (this.currentQuestion.answer === this.currentAnswer) {
@@ -155,18 +151,28 @@ export default {
       this.currentAnswer = null
       this.showAnswer = false
       this.dialog = false
+      clearTimeout(this.countIns)
       this.countDown = 60
       this.timeOut = false
     },
+
     getChipColor(value) {
       if (value > 300 && value < 800) return 'blue'
       else if (value >= 800) return 'red'
       else return 'green'
     },
 
+    openQuestion(question) {
+      this.currentQuestion = question
+      this.countDown = 60
+      this.dialog = true
+
+      this.countDownTimer()
+    },
+
     countDownTimer() {
-      if (this.countDown > 0) {
-        setTimeout(() => {
+      if (this.countDown) {
+        this.countIns = setTimeout(() => {
           this.countDown -= 1
           this.countDownTimer()
         }, 1000)
