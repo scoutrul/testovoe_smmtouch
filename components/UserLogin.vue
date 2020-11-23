@@ -9,21 +9,29 @@
           <v-container>
             <v-row>
               <v-col>
-                <v-text-field
-                  label="Enter your name"
-                  required
-                  v-model="userName"
-                />
+                <v-form v-model="valid">
+                  <v-text-field
+                    label="Enter your name"
+                    required
+                    v-model="userName"
+                    :rules="loginRules"
+                  />
+                </v-form>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
+          <v-spacer />
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="saveUser"
+            :disabled="!userName"
+            required
+          >
+            Save
           </v-btn>
-          <v-btn color="blue darken-1" text @click="saveUser"> Save </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -35,15 +43,19 @@ export default {
   name: 'UserLogin',
   data: () => ({
     dialog: true,
+    valid: false,
     userName: null,
+    loginRules: [
+      (v) => /^[_а-яА-Яa-zA-Z0-9]+$/.test(v) || 'Name must be valid',
+    ],
   }),
-  beforeMount() {
-    const userName = localStorage.getItem('userName')
-    if (userName) {
-      this.$store.commit('SET_USER', userName)
-      this.dialog = false
-    }
-  },
+  // beforeMount() {
+  //   const userName = localStorage.getItem('userName')
+  //   if (userName) {
+  //     this.$store.commit('SET_USER', userName)
+  //     this.dialog = false
+  //   }
+  // },
   methods: {
     saveUser() {
       this.dialog = false
