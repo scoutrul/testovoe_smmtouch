@@ -49,13 +49,13 @@ export default {
       (v) => /^[_а-яА-Яa-zA-Z0-9]+$/.test(v) || 'Name must be valid',
     ],
   }),
-  // beforeMount() {
-  //   const userName = localStorage.getItem('userName')
-  //   if (userName) {
-  //     this.$store.commit('SET_USER', userName)
-  //     this.dialog = false
-  //   }
-  // },
+  beforeMount() {
+    const userName = localStorage.getItem('userName')
+    if (userName) {
+      this.$store.commit('SET_USER', userName)
+      this.dialog = false
+    }
+  },
   methods: {
     saveUser() {
       this.dialog = false
